@@ -7,6 +7,10 @@ plugins {
 android {
     namespace = "com.example.simbirsoftplanner"
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileSdk = 36
 
     defaultConfig {
