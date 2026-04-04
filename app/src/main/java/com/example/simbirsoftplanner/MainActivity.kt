@@ -7,12 +7,14 @@ import androidx.lifecycle.lifecycleScope
 import com.example.simbirsoftplanner.ui.main.MainViewModel
 import com.example.simbirsoftplanner.ui.main.MainViewModelFactory
 import com.example.simbirsoftplanner.databinding.ActivityMainBinding
+import com.example.simbirsoftplanner.ui.main.TaskAdapter
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val taskAdapter = TaskAdapter()
 
     private val viewModel: MainViewModel by viewModels {
         MainViewModelFactory((application as PlannerApp).repository)
@@ -22,6 +24,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.rvTasks.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        binding.rvTasks.adapter = taskAdapter
 
         setupCalendar()
         observeViewModel()
@@ -38,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     private fun observeViewModel() {
         lifecycleScope.launch {
             viewModel.tasks.collect { taskList ->
+                taskAdapter.setItems(taskList)
             }
         }
     }

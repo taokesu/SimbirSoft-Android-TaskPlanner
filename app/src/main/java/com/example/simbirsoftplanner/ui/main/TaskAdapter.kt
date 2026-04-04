@@ -1,0 +1,49 @@
+package com.example.simbirsoftplanner.ui.main
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.example.simbirsoftplanner.data.model.TaskEntity
+import com.example.simbirsoftplanner.databinding.ItemTaskBinding
+import java.util.Calendar
+
+class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+
+    private var tasks: List<TaskEntity> = emptyList()
+
+    fun setItems(newTasks: List<TaskEntity>) {
+        tasks = newTasks
+        notifyDataSetChanged()
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
+        val binding = ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TaskViewHolder(binding)
+    }
+
+    override fun getItemCount(): Int = 24
+
+    override fun onBindViewHolder(holder: TaskViewHolder, hour: Int) {
+        holder.bind(hour, tasks)
+    }
+
+    class TaskViewHolder(private val binding: ItemTaskBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(hour: Int, allTasks: List<TaskEntity>) {
+            binding.tvTime.text = String.format("%02d:00", hour)
+
+            val taskForThisHour = allTasks.find {
+                val cal = Calendar.getInstance().apply { timeInMillis = it.dateStart * 1000 }
+                cal.get(Calendar.HOUR_OF_DAY) == hour
+            }
+
+            if (taskForThisHour != null) {
+                binding.tvTaskName.text = taskForThisHour.name
+                binding.tvTaskName.setTextColor(android.graphics.Color.BLACK)
+            } else {
+                binding.tvTaskName.text = "Свободно"
+                binding.tvTaskName.setTextColor(android.graphics.Color.GRAY)
+            }
+        }
+    }
+}

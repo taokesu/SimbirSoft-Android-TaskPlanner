@@ -10,7 +10,7 @@ android:layout_height="match_parent">
     android:layout_height="wrap_content"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_endOf="parent" />
+    app:layout_constraintEnd_toEndOf="parent" />
 
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/rvTasks"
@@ -19,6 +19,6 @@ android:layout_height="match_parent">
     app:layout_constraintTop_toBottomOf="@id/calendarView"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_endOf="parent" />
+    app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
