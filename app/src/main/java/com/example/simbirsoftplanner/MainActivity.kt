@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoftplanner.ui.main.MainViewModel
 import com.example.simbirsoftplanner.ui.main.MainViewModelFactory
 import com.example.simbirsoftplanner.databinding.ActivityMainBinding
@@ -17,7 +18,10 @@ class MainActivity : AppCompatActivity() {
     private val taskAdapter = TaskAdapter()
 
     private val viewModel: MainViewModel by viewModels {
-        MainViewModelFactory((application as PlannerApp).repository)
+        MainViewModelFactory(
+            (application as PlannerApp).repository,
+            this.application
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.rvTasks.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        binding.rvTasks.layoutManager = LinearLayoutManager(this)
         binding.rvTasks.adapter = taskAdapter
 
         setupCalendar()
@@ -41,10 +45,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
-            viewModel.tasks.collect { taskList ->
-                taskAdapter.setItems(taskList)
-            }
+        viewModel.filteredTasks.observe(this) { taskList ->
+            taskAdapter.setItems(taskList)
         }
     }
 }

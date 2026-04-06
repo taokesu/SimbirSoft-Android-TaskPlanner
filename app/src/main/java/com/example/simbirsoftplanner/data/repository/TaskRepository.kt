@@ -13,13 +13,16 @@ class TaskRepository(
     private val taskDao: TaskDao,
     private val context: Context
 ) {
+    val allTasks: Flow<List<TaskEntity>> = taskDao.getAllTasks()
+
     fun getTasksForDay(startOfDay: Long, endOfDay: Long): Flow<List<TaskEntity>> {
         return taskDao.getTasksForDay(startOfDay, endOfDay)
     }
 
     suspend fun populateDatabaseFromJson() = withContext(Dispatchers.IO) {
         try {
-            val jsonString = context.assets.open("tasks.json").bufferedReader().use { it.readText() }
+            val jsonString =
+                context.assets.open("tasks.json").bufferedReader().use { it.readText() }
             val listType = object : TypeToken<List<TaskEntity>>() {}.type
             val tasks: List<TaskEntity> = Gson().fromJson(jsonString, listType)
 
@@ -31,5 +34,9 @@ class TaskRepository(
 
     suspend fun addTask(task: TaskEntity) {
         taskDao.insertTask(task)
+    }
+
+    suspend fun insertTasks(tasks: List<TaskEntity>) {
+        taskDao.insertAll(tasks)
     }
 }
