@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SimbirSoftPlanner">
         <activity
+            android:name=".TaskDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddTaskActivity"
             android:exported="false" />
         <activity

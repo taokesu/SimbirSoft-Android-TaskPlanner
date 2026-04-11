@@ -5,13 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simbirsoftplanner.ui.main.MainViewModel
 import com.example.simbirsoftplanner.ui.main.MainViewModelFactory
 import com.example.simbirsoftplanner.databinding.ActivityMainBinding
 import com.example.simbirsoftplanner.ui.main.TaskAdapter
-import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
@@ -67,6 +65,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.filteredTasks.observe(this) { tasks ->
             Log.d("DEBUG_UI", "MainActivity: отправляю в адаптер задач: ${tasks.size}")
             taskAdapter.setItems(tasks)
+        }
+
+        taskAdapter.onTaskClick = { task ->
+            val intent = Intent(this, TaskDetailActivity::class.java)
+            intent.putExtra("TASK", task)
+            startActivity(intent)
         }
     }
 }

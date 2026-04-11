@@ -1,5 +1,6 @@
 package com.example.simbirsoftplanner.ui.main
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +11,8 @@ import java.util.Calendar
 class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private var tasks: List<TaskEntity> = emptyList()
+
+    var onTaskClick: ((TaskEntity) -> Unit)? = null
 
     fun setItems(newTasks: List<TaskEntity>) {
         tasks = newTasks
@@ -27,16 +30,24 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
         holder.bind(hour, tasks)
     }
 
-    class TaskViewHolder(private val binding: ItemTaskBinding) :
+    inner class TaskViewHolder(private val binding: ItemTaskBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                val task = tasks.find {
+                    val cal = Calendar.getInstance().apply { timeInMillis = it.dateStart }
+                    cal.get(Calendar.HOUR_OF_DAY) == (bindingAdapterPosition)
+                }
+                task?.let { onTaskClick?.invoke(it) }
+            }
+        }
 
         fun bind(hour: Int, allTasks: List<TaskEntity>) {
             binding.tvTime.text = String.format("%02d:00", hour)
 
             val taskForThisHour = allTasks.find {
-                val cal = Calendar.getInstance().apply {
-                    timeInMillis = it.dateStart
-                }
+                val cal = Calendar.getInstance().apply { timeInMillis = it.dateStart }
                 cal.get(Calendar.HOUR_OF_DAY) == hour
             }
 
