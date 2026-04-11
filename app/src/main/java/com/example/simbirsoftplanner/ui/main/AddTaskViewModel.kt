@@ -35,4 +35,15 @@ class AddTaskViewModel(private val repository: TaskRepository) : ViewModel() {
             }
         }
     }
+
+    fun updateTask(task: TaskEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.updateTask(task)
+                Log.d("DEBUG_SAVE", "УСПЕШНО ОБНОВЛЕНО: ${task.name}")
+            } catch (e: Exception) {
+                Log.e("DEBUG_SAVE", "ОШИБКА ОБНОВЛЕНИЯ: ${e.message}")
+            }
+        }
+    }
 }

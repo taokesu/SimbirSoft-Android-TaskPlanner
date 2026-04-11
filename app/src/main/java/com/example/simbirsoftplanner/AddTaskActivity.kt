@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.simbirsoftplanner.data.local.AppDatabase
+import com.example.simbirsoftplanner.data.model.TaskEntity
 import com.example.simbirsoftplanner.data.repository.TaskRepository
 import com.example.simbirsoftplanner.databinding.ActivityAddTaskBinding
 import com.example.simbirsoftplanner.ui.main.AddTaskViewModel
@@ -26,19 +27,38 @@ class AddTaskActivity : AppCompatActivity() {
 
         setupTimePicker()
 
+        val taskToEdit = intent.getSerializableExtra("TASK_TO_EDIT") as? TaskEntity
+
         selectedTimestamp = intent.getLongExtra("SELECTED_DATE", System.currentTimeMillis())
 
         val repository = (application as PlannerApp).repository
         val factory = AddTaskViewModelFactory(repository)
         val viewModel = ViewModelProvider(this, factory).get(AddTaskViewModel::class.java)
 
+        if (taskToEdit != null) {
+            supportActionBar?.title = "Редактирование задачи"
+            binding.etTaskName.setText(taskToEdit.name)
+            binding.etTaskDescription.setText(taskToEdit.description)
+
+            val cal = Calendar.getInstance().apply { timeInMillis = taskToEdit.dateStart }
+            selectedHour = cal.get(Calendar.HOUR_OF_DAY)
+            binding.tvSelectedTime.text = String.format("Выбрано время: %02d:00", selectedHour)
+        }
+
         binding.btnSaveTask.setOnClickListener {
             val name = binding.etTaskName.text.toString()
             val desc = binding.etTaskDescription.text.toString()
 
             if (name.isNotEmpty()) {
-                Log.d("DEBUG", "Нажата кнопка сохранить. Время: $selectedTimestamp, Час: $selectedHour")
-                viewModel.saveTask(name, desc, selectedTimestamp, selectedHour)
+                if (taskToEdit != null) {
+                    viewModel.updateTask(taskToEdit.copy(
+                        name = name,
+                        description = desc,
+                        dateStart = taskToEdit.dateStart
+                    ))
+                } else {
+                    viewModel.saveTask(name, desc, selectedTimestamp, selectedHour)
+                }
                 finish()
             }
         }

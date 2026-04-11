@@ -1,5 +1,6 @@
 package com.example.simbirsoftplanner
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.simbirsoftplanner.databinding.ActivityTaskDetailBinding
@@ -11,28 +12,41 @@ import java.util.Locale
 class TaskDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTaskDetailBinding
+    private lateinit var currentTask: TaskEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTaskDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val task = intent.getSerializableExtra("TASK") as? TaskEntity
-        if (task == null) {
-            finish()
-            return
-        }
+        currentTask = intent.getSerializableExtra("TASK") as? TaskEntity
+            ?: run { finish(); return }
 
         val dateFormat = SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale("ru"))
-        val startDate = Date(task.dateStart)
-        val finishDate = Date(task.dateFinish)
+        val startDate = Date(currentTask.dateStart)
 
-        binding.tvDetailTitle.text = task.name
-        binding.tvDetailDateTime.text = "${dateFormat.format(startDate)} — ${SimpleDateFormat("HH:mm", Locale("ru")).format(finishDate)}"
-        binding.tvDetailDescription.text = task.description.ifEmpty { "Нет описания" }
+        binding.tvDetailTitle.text = currentTask.name
+        binding.tvDetailDateTime.text = "${dateFormat.format(startDate)} — ${SimpleDateFormat("HH:mm", Locale("ru")).format(Date(currentTask.dateFinish))}"
+        binding.tvDetailDescription.text = currentTask.description.ifEmpty { "Нет описания" }
 
         supportActionBar?.title = "Подробности задачи"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        binding.btnEditTask.setOnClickListener {
+            val intent = Intent(this, AddTaskActivity::class.java)
+            intent.putExtra("TASK_TO_EDIT", currentTask)
+            startActivity(intent)
+            finish()
+        }
+
+        binding.btnDeleteTask.setOnClickListener {
+            val repository = (application as PlannerApp).repository
+            kotlinx.coroutines.runBlocking {
+                repository.deleteTask(currentTask)
+            }
+            android.widget.Toast.makeText(this, "Задача удалена", android.widget.Toast.LENGTH_SHORT).show()
+            finish()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

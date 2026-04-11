@@ -60,9 +60,11 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
             if (taskForThisHour != null) {
                 binding.tvTaskName.text = taskForThisHour.name
                 binding.tvTaskName.setTextColor(android.graphics.Color.BLACK)
+                binding.viewColorBar.setBackgroundColor(android.graphics.Color.parseColor("#4CAF50"))
             } else {
                 binding.tvTaskName.text = "Свободно"
                 binding.tvTaskName.setTextColor(android.graphics.Color.GRAY)
+                binding.viewColorBar.setBackgroundColor(android.graphics.Color.TRANSPARENT)
             }
         }
     }

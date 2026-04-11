@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -35,7 +36,9 @@ class MainActivity : AppCompatActivity() {
         setupCalendar()
         observeViewModel()
 
-        viewModel.loadTasksForDate(System.currentTimeMillis())
+        val today = System.currentTimeMillis()
+        binding.calendarView.date = today
+        viewModel.onDateSelected(today)
 
         binding.fabAddTask.setOnClickListener {
             val intent = Intent(this, AddTaskActivity::class.java)

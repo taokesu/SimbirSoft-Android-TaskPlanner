@@ -25,4 +25,12 @@ class TaskRepository(
     suspend fun insertAll(tasks: List<TaskEntity>) {
         taskDao.insertAll(tasks)
     }
+
+    suspend fun deleteTask(task: TaskEntity) {
+        taskDao.deleteTask(task)
+    }
+
+    suspend fun updateTask(task: TaskEntity) {
+        taskDao.updateTask(task)
+    }
 }

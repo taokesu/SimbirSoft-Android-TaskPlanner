@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">SimbirSoftPlanner</string>
     <string name="add_new_task">Add new task</string>
+    <string name="delete_text">Удалить задачу</string>
+    <string name="time_example_text">10:00-11:00</string>
+    <string name="task_description_text">Свободно</string>
+    <string name="edit_text">Редактировать задачу</string>
+    <string name="task_name">Название задачи</string>
+    <string name="task_description">Описание</string>
+    <string name="choose_time">Выбрать время</string>
+    <string name="time_not_chosen">Время не выбрано</string>
+    <string name="save">Сохранить</string>
 </resources>

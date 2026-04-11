@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -9,7 +10,7 @@
         android:id="@+id/etTaskName"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="Название задачи"
+        android:hint="@string/task_name"
         android:inputType="text" />
 
     <EditText
@@ -18,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="top"
-        android:hint="Описание"
+        android:hint="@string/task_description"
         android:inputType="textMultiLine"
         android:minLines="3" />
 
@@ -27,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Выбрать время" />
+        android:text="@string/choose_time" />
 
     <TextView
         android:id="@+id/tvSelectedTime"
@@ -35,13 +36,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        android:text="Время не выбрано" />
+        android:text="@string/time_not_chosen" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSaveTask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Сохранить" />
+        android:text="@string/save"
+        android:textColor="@android:color/white"
+        app:backgroundTint="#4CAF50"
+        app:cornerRadius="12dp"
+        app:icon="@android:drawable/ic_menu_save"
+        app:iconGravity="start"
+        app:iconPadding="8dp" />
 
 </LinearLayout>

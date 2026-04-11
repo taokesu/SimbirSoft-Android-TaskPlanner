@@ -1,9 +1,11 @@
 package com.example.simbirsoftplanner.data.local
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.simbirsoftplanner.data.model.TaskEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -23,4 +25,10 @@ interface TaskDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(tasks: List<TaskEntity>)
+
+    @Delete
+    suspend fun deleteTask(task: TaskEntity)
+
+    @Update
+    suspend fun updateTask(task: TaskEntity)
 }
