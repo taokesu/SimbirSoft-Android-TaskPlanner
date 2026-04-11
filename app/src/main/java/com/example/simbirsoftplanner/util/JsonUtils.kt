@@ -13,7 +13,14 @@ object JsonUtils {
                 .use { it.readText() }
 
             val listType = object : TypeToken<List<TaskEntity>>() {}.type
-            Gson().fromJson(jsonString, listType)
+            val tasks: List<TaskEntity> = Gson().fromJson(jsonString, listType)
+
+            tasks.map { task ->
+                task.copy(
+                    dateStart = task.dateStart * 1000,
+                    dateFinish = task.dateFinish * 1000
+                )
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             emptyList()

@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupCalendar() {
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val calendar = Calendar.getInstance()
-            calendar.set(year, month, dayOfMonth, 0, 0, 0) // Устанавливаем в 00:00:00
+            calendar.set(year, month, dayOfMonth, 0, 0, 0)
             calendar.set(Calendar.MILLISECOND, 0)
 
             val selectedMs = calendar.timeInMillis

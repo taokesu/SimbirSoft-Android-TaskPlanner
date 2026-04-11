@@ -20,7 +20,7 @@ class AddTaskViewModel(private val repository: TaskRepository) : ViewModel() {
 
         val finalTimestamp = calendar.timeInMillis
 
-        viewModelScope.launch(Dispatchers.IO) { // ГАРАНТИРУЕМ ФОНОВЫЙ ПОТОК
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val newTask = TaskEntity(
                     name = name,
