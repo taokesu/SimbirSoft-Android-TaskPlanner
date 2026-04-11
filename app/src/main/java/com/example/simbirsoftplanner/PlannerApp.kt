@@ -7,7 +7,9 @@ import com.example.simbirsoftplanner.data.repository.TaskRepository
 
 class PlannerApp : Application() {
     val database by lazy {
-        Room.databaseBuilder(this, AppDatabase::class.java, "planner_db").build()
+        Room.databaseBuilder(this, AppDatabase::class.java, "planner_db")
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     val repository by lazy {

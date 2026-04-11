@@ -29,11 +29,14 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     class TaskViewHolder(private val binding: ItemTaskBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(hour: Int, allTasks: List<TaskEntity>) {
             binding.tvTime.text = String.format("%02d:00", hour)
 
             val taskForThisHour = allTasks.find {
-                val cal = Calendar.getInstance().apply { timeInMillis = it.dateStart * 1000 }
+                val cal = Calendar.getInstance().apply {
+                    timeInMillis = it.dateStart
+                }
                 cal.get(Calendar.HOUR_OF_DAY) == hour
             }
 

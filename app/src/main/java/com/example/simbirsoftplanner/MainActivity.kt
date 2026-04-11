@@ -1,6 +1,8 @@
 package com.example.simbirsoftplanner
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -34,19 +36,37 @@ class MainActivity : AppCompatActivity() {
 
         setupCalendar()
         observeViewModel()
+
+        viewModel.loadTasksForDate(System.currentTimeMillis())
+
+        binding.fabAddTask.setOnClickListener {
+            val intent = Intent(this, AddTaskActivity::class.java)
+            intent.putExtra("SELECTED_DATE", viewModel.currentSelectedDate)
+            startActivity(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadTasksForDate(viewModel.currentSelectedDate)
     }
 
     private fun setupCalendar() {
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val calendar = Calendar.getInstance()
-            calendar.set(year, month, dayOfMonth)
-            viewModel.onDateSelected(calendar.timeInMillis)
+            calendar.set(year, month, dayOfMonth, 0, 0, 0) // Устанавливаем в 00:00:00
+            calendar.set(Calendar.MILLISECOND, 0)
+
+            val selectedMs = calendar.timeInMillis
+            Log.d("DEBUG", "Выбрана дата (мс): $selectedMs")
+            viewModel.onDateSelected(selectedMs)
         }
     }
 
     private fun observeViewModel() {
-        viewModel.filteredTasks.observe(this) { taskList ->
-            taskAdapter.setItems(taskList)
+        viewModel.filteredTasks.observe(this) { tasks ->
+            Log.d("DEBUG_UI", "MainActivity: отправляю в адаптер задач: ${tasks.size}")
+            taskAdapter.setItems(tasks)
         }
     }
 }
