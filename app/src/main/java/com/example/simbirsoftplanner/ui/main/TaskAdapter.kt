@@ -1,6 +1,5 @@
 package com.example.simbirsoftplanner.ui.main
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -35,20 +34,27 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
         init {
             binding.root.setOnClickListener {
-                val task = tasks.find {
-                    val cal = Calendar.getInstance().apply { timeInMillis = it.dateStart }
-                    cal.get(Calendar.HOUR_OF_DAY) == (bindingAdapterPosition)
+                val clickedHour = bindingAdapterPosition
+                val task = tasks.find { task ->
+                    val calStart = Calendar.getInstance().apply { timeInMillis = task.dateStart }
+                    val calEnd = Calendar.getInstance().apply { timeInMillis = task.dateFinish }
+                    val startHour = calStart.get(Calendar.HOUR_OF_DAY)
+                    val endHour = calEnd.get(Calendar.HOUR_OF_DAY)
+                    clickedHour in startHour until endHour
                 }
                 task?.let { onTaskClick?.invoke(it) }
             }
         }
 
         fun bind(hour: Int, allTasks: List<TaskEntity>) {
-            binding.tvTime.text = String.format("%02d:00", hour)
+            binding.tvTime.text = String.format("%02d:00-%02d:00", hour, hour + 1)
 
-            val taskForThisHour = allTasks.find {
-                val cal = Calendar.getInstance().apply { timeInMillis = it.dateStart }
-                cal.get(Calendar.HOUR_OF_DAY) == hour
+            val taskForThisHour = allTasks.find { task ->
+                val calStart = Calendar.getInstance().apply { timeInMillis = task.dateStart }
+                val calEnd = Calendar.getInstance().apply { timeInMillis = task.dateFinish }
+                val startHour = calStart.get(Calendar.HOUR_OF_DAY)
+                val endHour = calEnd.get(Calendar.HOUR_OF_DAY)
+                hour in startHour until endHour
             }
 
             if (taskForThisHour != null) {

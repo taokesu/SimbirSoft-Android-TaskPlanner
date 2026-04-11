@@ -28,7 +28,7 @@ class TaskDetailActivity : AppCompatActivity() {
         val finishDate = Date(task.dateFinish)
 
         binding.tvDetailTitle.text = task.name
-        binding.tvDetailDateTime.text = "${dateFormat.format(startDate)} — ${dateFormat.format(finishDate)}"
+        binding.tvDetailDateTime.text = "${dateFormat.format(startDate)} — ${SimpleDateFormat("HH:mm", Locale("ru")).format(finishDate)}"
         binding.tvDetailDescription.text = task.description.ifEmpty { "Нет описания" }
 
         supportActionBar?.title = "Подробности задачи"
