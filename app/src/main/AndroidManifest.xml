@@ -13,13 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SimbirSoftPlanner">
         <activity
-            android:name=".TaskDetailActivity"
+            android:name=".ui.detail.TaskDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".AddTaskActivity"
+            android:name=".ui.create.AddTaskActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

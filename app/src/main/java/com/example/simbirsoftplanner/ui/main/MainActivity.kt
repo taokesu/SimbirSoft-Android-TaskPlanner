@@ -1,15 +1,16 @@
-package com.example.simbirsoftplanner
+package com.example.simbirsoftplanner.ui.main
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.simbirsoftplanner.ui.main.MainViewModel
-import com.example.simbirsoftplanner.ui.main.MainViewModelFactory
+import com.example.simbirsoftplanner.PlannerApp
+import com.example.simbirsoftplanner.ui.detail.TaskDetailActivity
 import com.example.simbirsoftplanner.databinding.ActivityMainBinding
-import com.example.simbirsoftplanner.ui.main.TaskAdapter
+import com.example.simbirsoftplanner.ui.create.AddTaskActivity
 import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)

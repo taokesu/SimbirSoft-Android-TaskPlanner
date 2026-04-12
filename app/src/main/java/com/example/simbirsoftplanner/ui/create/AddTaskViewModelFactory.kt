@@ -1,4 +1,4 @@
-package com.example.simbirsoftplanner.ui.main
+package com.example.simbirsoftplanner.ui.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

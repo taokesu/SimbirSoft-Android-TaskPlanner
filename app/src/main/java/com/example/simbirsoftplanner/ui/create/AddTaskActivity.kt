@@ -1,18 +1,13 @@
-package com.example.simbirsoftplanner
+package com.example.simbirsoftplanner.ui.create
 
 import android.app.TimePickerDialog
 import java.util.Calendar
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.simbirsoftplanner.data.local.AppDatabase
+import com.example.simbirsoftplanner.PlannerApp
 import com.example.simbirsoftplanner.data.model.TaskEntity
-import com.example.simbirsoftplanner.data.repository.TaskRepository
 import com.example.simbirsoftplanner.databinding.ActivityAddTaskBinding
-import com.example.simbirsoftplanner.ui.main.AddTaskViewModel
-import com.example.simbirsoftplanner.ui.main.AddTaskViewModelFactory
 
 
 class AddTaskActivity : AppCompatActivity() {
@@ -51,11 +46,13 @@ class AddTaskActivity : AppCompatActivity() {
 
             if (name.isNotEmpty()) {
                 if (taskToEdit != null) {
-                    viewModel.updateTask(taskToEdit.copy(
-                        name = name,
-                        description = desc,
-                        dateStart = taskToEdit.dateStart
-                    ))
+                    viewModel.updateTask(
+                        taskToEdit.copy(
+                            name = name,
+                            description = desc,
+                            dateStart = taskToEdit.dateStart
+                        )
+                    )
                 } else {
                     viewModel.saveTask(name, desc, selectedTimestamp, selectedHour)
                 }

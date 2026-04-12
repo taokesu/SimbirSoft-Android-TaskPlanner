@@ -1,10 +1,14 @@
-package com.example.simbirsoftplanner
+package com.example.simbirsoftplanner.ui.detail
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.simbirsoftplanner.databinding.ActivityTaskDetailBinding
+import com.example.simbirsoftplanner.PlannerApp
 import com.example.simbirsoftplanner.data.model.TaskEntity
+import com.example.simbirsoftplanner.databinding.ActivityTaskDetailBinding
+import com.example.simbirsoftplanner.ui.create.AddTaskActivity
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -26,7 +30,12 @@ class TaskDetailActivity : AppCompatActivity() {
         val startDate = Date(currentTask.dateStart)
 
         binding.tvDetailTitle.text = currentTask.name
-        binding.tvDetailDateTime.text = "${dateFormat.format(startDate)} — ${SimpleDateFormat("HH:mm", Locale("ru")).format(Date(currentTask.dateFinish))}"
+        binding.tvDetailDateTime.text = "${dateFormat.format(startDate)} — ${
+            SimpleDateFormat(
+                "HH:mm",
+                Locale("ru")
+            ).format(Date(currentTask.dateFinish))
+        }"
         binding.tvDetailDescription.text = currentTask.description.ifEmpty { "Нет описания" }
 
         supportActionBar?.title = "Подробности задачи"
@@ -41,10 +50,10 @@ class TaskDetailActivity : AppCompatActivity() {
 
         binding.btnDeleteTask.setOnClickListener {
             val repository = (application as PlannerApp).repository
-            kotlinx.coroutines.runBlocking {
+            runBlocking {
                 repository.deleteTask(currentTask)
             }
-            android.widget.Toast.makeText(this, "Задача удалена", android.widget.Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Задача удалена", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
